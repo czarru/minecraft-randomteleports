@@ -3,6 +3,9 @@
 Prosty plugin na teleportacje graczy w randomową lokalizacje.<br>
 Przeznaczony głównie dla serwerów "WOJNY GILDII"<br>
 
+# Prezentacja
+
+Youtube: https://www.youtube.com/watch?v=ue4pLzeojlY
 
 # Kontakt
 
