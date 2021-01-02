@@ -13,4 +13,10 @@ Email: server1337@interia.pl<br>
 Discord: czarru#9722<br>
 Website: http://mastercoders.pl<br>
 
+# Aktualizacje
+
+<b>1.0</b><br>
+  Stworzenie projektu TeleportsPlugin<br>
+<b>1.1</b><br>
+  Dodanie konfiguracji pluinu
 
