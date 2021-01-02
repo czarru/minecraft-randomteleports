@@ -1,13 +1,16 @@
 package Teleports;
 
-import org.bukkit.event.player.*;
-import org.bukkit.event.block.*;
-import org.bukkit.material.*;
-import org.bukkit.entity.*;
-import org.bukkit.block.*;
-import java.util.*;
-import org.bukkit.*;
-import org.bukkit.event.*;
+import java.util.ArrayList;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.material.Button;
 
 public class Events implements Listener
 {
@@ -18,35 +21,25 @@ public class Events implements Listener
     public void onUse(final PlayerInteractEvent e) {
 		if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.STONE_BUTTON) {
             final Button b = (Button)e.getClickedBlock().getState().getData();
-            final Block gold = e.getClickedBlock().getRelative(b.getAttachedFace());
-            if (gold.getType() == Material.GOLD_BLOCK) {
+            final Block bb = e.getClickedBlock().getRelative(b.getAttachedFace());
+            if (bb.getType() == Material.GOLD_BLOCK) {
                 final ArrayList<Player> list = Main.getNearbyPlayers(e.getClickedBlock().getLocation(), e.getPlayer());
                 final Location l = Main.getRandomLocation(e.getPlayer().getWorld());
                 if (list.size() == 0) {
-                    TitleP.title(e.getPlayer(), "", ChatColor.RED + "Nie mo¿esz siê sam teleportowaæ!", 0, 10, 0);
+                    TextUtilities.title(e.getPlayer(), "", String.valueOf(TextUtilities.rp(Main.getInst().getConfig().getString("nosolo"))), 0, 10, 0);
                     return;
                 }
-                final Random r = new Random();
-                final Player second = list.get(r.nextInt(list.size()));
+                final Player second = list.get(Main.r.nextInt(list.size()));
                 e.getPlayer().teleport(l);
                 second.teleport(l);
-                e.getPlayer().sendMessage(ChatColor.GREEN + "Pomyœlnie przeteleportowano!");
-                second.sendMessage(ChatColor.GREEN + "Pomyœlnie przeteleportowano!");
+                e.getPlayer().sendMessage(String.valueOf(TextUtilities.rp(Main.getInst().getConfig().getString("success"))));
+                second.sendMessage(String.valueOf(TextUtilities.rp(Main.getInst().getConfig().getString("success"))));
             }
-        }
-    }
-	
-	//teleport
-	
-	@EventHandler
-    public void onUse2(final PlayerInteractEvent e) {
-		if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.STONE_BUTTON) {
-            final Button b = (Button)e.getClickedBlock().getState().getData();
-            final Block sponge = e.getClickedBlock().getRelative(b.getAttachedFace());
-            if (sponge.getType() == Material.SPONGE) {
-                final Location l = Main.getRandomLocation(e.getPlayer().getWorld());
+            //teleport solo
+            final Location l = Main.getRandomLocation(e.getPlayer().getWorld());
+            if (bb.getType() == Material.SPONGE) {
                 e.getPlayer().teleport(l);
-                e.getPlayer().sendMessage(ChatColor.GREEN + "Pomyœlnie przeteleportowano!");
+                e.getPlayer().sendMessage(String.valueOf(TextUtilities.rp(Main.getInst().getConfig().getString("success"))));
             }
         }
     }
