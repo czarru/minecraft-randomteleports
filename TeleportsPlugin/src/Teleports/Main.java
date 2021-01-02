@@ -1,11 +1,19 @@
 package Teleports;
 
-import org.bukkit.plugin.java.*;
-import org.bukkit.event.*;
-import org.bukkit.plugin.*;
-import org.bukkit.entity.*;
-import java.util.*;
-import org.bukkit.*;
+import java.util.ArrayList;
+import java.util.Random;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class Main extends JavaPlugin
 {
@@ -13,10 +21,21 @@ public class Main extends JavaPlugin
     public static int Xmax;
     public static int Zmin;
     public static int Zmax;
+    public static Random r = new Random();
+    private static Main instance;
     
-    public void onEnable() {
+    @SuppressWarnings("static-access")
+	public void onEnable() {
+    	instance = this;
+    	saveDefaultConfig();
         super.onEnable();
-        this.getServer().getPluginManager().registerEvents((Listener)new Events(), (Plugin)this);
+        this.Xmin = getConfig().getInt("minX");
+        this.Xmax = getConfig().getInt("maxX");
+        this.Zmin = getConfig().getInt("minZ");
+        this.Zmax = getConfig().getInt("maxZ");
+        getServer().getPluginManager().registerEvents((Listener)new Events(), (Plugin)this);
+		Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + " Plugin zostal uruchomiony w wersji " + ChatColor.WHITE + this.getDescription().getVersion());
+
     }
     
     public static ArrayList<Player> getNearbyPlayers(final Location l, final Player p) {
@@ -30,13 +49,15 @@ public class Main extends JavaPlugin
         return nearby;
     }
     
+    public static Main getInst() {
+        return Main.instance;
+    }
+    
     public static int getRandomX() {
-        final Random r = new Random();
         return r.nextInt(Main.Xmax - Main.Xmin) + Main.Xmin;
     }
     
     public static int getRandomZ() {
-        final Random r = new Random();
         return r.nextInt(Main.Zmax - Main.Zmin) + Main.Zmin;
     }
     
@@ -53,12 +74,5 @@ public class Main extends JavaPlugin
             }
         } while (!safe);
         return l;
-    }
-    
-    static {
-        Main.Xmin = -100;
-        Main.Xmax = 100;
-        Main.Zmin = -100;
-        Main.Zmax = 100;
     }
 }
